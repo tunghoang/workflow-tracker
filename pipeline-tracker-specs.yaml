@@ -1,0 +1,70 @@
+title: Pipeline Tracker
+version: 1.0
+name: PipelineTracker
+connection_string: 'postgresql+psycopg2://apom:apom!1111qaz@112.137.129.244/runstate'
+namespaces:
+  - ns_name: stage
+    ns_description: pipeline stage status namespace
+    resource_name: stage
+    props:
+      - name: idStage
+        type: Integer
+        primary_key: yes
+      - name: title
+        type: String
+        type_specs: (150)
+      - name: idPipeline
+        type: Integer
+        foreign_key: pipeline.idPipeline
+    list_api: list stages 
+    list_api_description: list many stages
+  - ns_name: pipeline
+    ns_description: pipelines namespace
+    resource_name: pipeline
+    props:
+      - name: idPipeline
+        type: Integer
+        primary_key: yes
+      - name: name
+        type: String
+        type_specs: (100)
+    list_api: list pipelines
+    list_api_description: list many pipelines
+    new_api: create pipeline
+    new_api_description: create a pipeline
+    get_api: get pipeline
+    get_api_description: find a pipeline by idPipeline
+    update_api: modify pipeline
+    update_api_description: modify pipeline with specific idPipeline
+    delete_api: delete pipeline
+    delete_api_description: delete a pipeline by idPipeline
+  - ns_name: state
+    ns_description: states of stages of piplines
+    resource_name: state
+    props:
+      - name: idState
+        type: Integer
+        primary_key: yes
+      - name: idStage
+        type: Integer
+        foreign_key: stage.idStage
+      - name: start
+        type: DateTime
+      - name: status
+        type: Integer
+    uniques:
+      - keys:
+        - name: idStage
+        - name: start
+    list_api: list states
+    list_api_description: list many states
+    new_api: create state
+    new_api_description: create a state
+    get_api: get state
+    get_api_description: find a state by idState
+    update_api: modify state
+    update_api_description: modify state with specific idState
+    delete_api: delete state
+    delete_api_description: delete a state by idState
+    find_api: delete state
+    find_api_description: delete a state by idStage
